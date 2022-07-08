@@ -40,3 +40,9 @@
 button {
   font-size: calc(10px + 2vmin);
 }
+#leftSider{
+  background-color: white;
+}
+#topHeader{
+  background-color: white;
+}
