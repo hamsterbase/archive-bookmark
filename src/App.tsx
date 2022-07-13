@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
-import { Table } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { Table, Button, Upload } from 'antd';
 import 'antd/dist/antd.css';
 
 function App() {
@@ -14,8 +15,8 @@ function App() {
     },
     {
       title: '地址',
-      dataIndex: 'addr',
-      key: 'addr',
+      dataIndex: 'url',
+      key: 'url',
     },
     {
       title: '文件夹',
@@ -23,11 +24,14 @@ function App() {
       key: 'folder',
     },
   ];
-  const data = { key: '1', name: 'baidu', addr: 'www.baidu.com', folder: 'first' };
+  const data = { key: '1', name: 'baidu', url: 'www.baidu.com', folder: 'first' };
   const dataSource = new Array(20).fill(data);
 
   return (
     <div className="App">
+      <Upload>
+        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+      </Upload>
       <Table dataSource={dataSource} columns={columns} />
     </div>
   );
