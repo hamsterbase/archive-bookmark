@@ -40,3 +40,31 @@
 button {
   font-size: calc(10px + 2vmin);
 }
+#leftSider {
+  background-color: white;
+}
+#topHeader {
+  background-color: white;
+}
+.App {
+  padding: 30px;
+}
+.uploadBnt {
+  display: flex;
+  margin: 20px;
+  margin-left: 0px;
+}
+.Mytable {
+  overflow: hidden;
+}
+.Mytable th {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 33.3%;
+}
+.Mytable th td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

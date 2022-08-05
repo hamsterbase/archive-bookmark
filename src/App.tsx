@@ -64,9 +64,14 @@ function App() {
           //我们可以发现，所有的文件夹都是 H3, 然后加一个 DL
           if (parent.tagName === 'DL') {
             //找到 h3 的标题
-            parents.unshift(parent.previousSibling.previousSibling.textContent);
+            parents.unshift('/' + parent.previousSibling.previousSibling.textContent);
           }
           parent = parent.parentNode;
+        }
+
+        if (parents.length == 2) {
+          //parents.unshift('/');
+          parents.push('/');
         }
         cnt++;
         return {
@@ -105,12 +110,19 @@ function App() {
     };
     console.log(options);
   };
+  //
+  // const React.FC = () => {
+  //   const [size, setSize] = useState<SpaceSize | [SpaceSize, SpaceSize]>('small');
+
   return (
     <div className="App">
-      <Upload customRequest={uploadHtml}>
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-      </Upload>
-      <Table dataSource={tableData} columns={columns} />
+      <div className="uploadBnt">
+        <Upload customRequest={uploadHtml}>
+          <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        </Upload>
+      </div>
+
+      <Table className="Mytable" table-layout="fixed" dataSource={tableData} columns={columns} />
     </div>
   );
 }
