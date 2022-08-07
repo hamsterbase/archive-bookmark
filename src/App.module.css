@@ -1,4 +1,4 @@
-.App {
+/* .contaniner {
   text-align: center;
 }
 
@@ -45,8 +45,8 @@ button {
 }
 #topHeader {
   background-color: white;
-}
-.App {
+} */
+.container {
   padding: 30px;
 }
 .uploadBnt {
@@ -54,17 +54,7 @@ button {
   margin: 20px;
   margin-left: 0px;
 }
-.Mytable {
+.mytable {
   overflow: hidden;
 }
-.Mytable th {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 33.3%;
-}
-.Mytable th td {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+
