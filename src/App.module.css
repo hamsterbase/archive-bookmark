@@ -1,4 +1,4 @@
-.App {
+/* .contaniner {
   text-align: center;
 }
 
@@ -12,6 +12,7 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 
 .App-header {
   background-color: #282c34;
@@ -39,4 +40,21 @@
 
 button {
   font-size: calc(10px + 2vmin);
+}
+#leftSider {
+  background-color: white;
+}
+#topHeader {
+  background-color: white;
+} */
+.container {
+  padding: 30px;
+}
+.uploadBnt {
+  display: flex;
+  margin: 20px;
+  margin-left: 0px;
+}
+.mytable {
+  overflow: hidden;
 }
