@@ -20,7 +20,7 @@ export function AnalyseHtml(file: File) {
       const linksElements = Array.from(root.querySelectorAll('a'));
       let cnt = 0;
       const links = linksElements.map((link) => {
-        let parent: any = link?.parentNode;
+        let parent = link?.parentNode;
         let parents = [];
 
         while (parent) {

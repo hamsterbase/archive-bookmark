@@ -35,9 +35,9 @@ const columns = [
 ];
 
 function App() {
-  const [tableData, setTableData] = useState<any>([]);
+  const [tableData, setTableData] = useState([]);
   //转换links中的数据，返回书签数据集合
-  const change = (links: any) => {
+  const change = (links) => {
     let _data = [];
     //数据转换：将link数据转成tableData中元素
     for (let value in links) {
@@ -52,10 +52,10 @@ function App() {
     return _data;
   };
   //  自定义上传函数
-  const uploadHtml = (options: any) => {
+  const uploadHtml = (options) => {
     const { onSuccess, onError, file, filename, onProgress, onChange } = options;
     AnalyseHtml(file)
-      .then((data: any) => {
+      .then((data) => {
         let _data = change(data);
         setTableData(_data);
       })
