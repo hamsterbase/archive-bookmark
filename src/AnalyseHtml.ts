@@ -16,7 +16,6 @@ export function AnalyseHtml(file: File) {
       const header = mainDocument.querySelector('h1');
       //找到书签的根
       const root = header?.nextElementSibling || mainDocument.body;
-
       //找到全部的书签
       const linksElements = Array.from(root.querySelectorAll('a'));
       let cnt = 0;
@@ -28,14 +27,14 @@ export function AnalyseHtml(file: File) {
           //我们可以发现，所有的文件夹都是 H3, 然后加一个 DL
           if (parent?.tagName === 'DL') {
             //找到 h3 的标题
-            const textContent = `/${parent.previousElementSibling?.textContent}/${link.textContent}`;
+            // const textContent = `/${parent.previousElementSibling?.textContent}/${link.textContent}`;
+            // parents.unshift(textContent);
+            const textContent = `/${parent.previousSibling.previousSibling.textContent}`;
             parents.unshift(textContent);
           }
           parent = parent.parentNode;
         }
-
         if (parents.length == 2) {
-          //parents.unshift('/');
           parents.push('/');
         }
         cnt++;
