@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Table, Button, Upload } from 'antd';
 import { AnalyseHtml } from './analysis-html';
-
 import type { RcFile } from 'antd/lib/upload/interface';
 import type { BookmarkLink } from './analysis-html';
-
 import 'antd/dist/antd.css';
 import styles from './App.module.css';
 

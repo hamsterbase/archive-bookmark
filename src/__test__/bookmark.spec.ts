@@ -1,9 +1,8 @@
 import { it, expect } from 'vitest';
 import { JSDOM } from 'jsdom';
 import { getBookmarks } from '../analysis-html';
-// import fs from 'fs';
-let fs = require('fs');
-let path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 it('test bookmark', () => {
   const bookmarkHtml = fs.readFileSync(path.join(__dirname, './fixtures/bookmark.html'), 'utf8');
