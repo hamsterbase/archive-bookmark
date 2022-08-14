@@ -7,11 +7,13 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "coverage": "vitest run --coverage",
-    "test": "vitest -w"
+    "test": "vitest -w",
+    "start": "electron src/main/electron.js"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.21.3",
+    "electron": "^20.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
