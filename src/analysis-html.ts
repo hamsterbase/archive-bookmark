@@ -29,9 +29,6 @@ export function getBookmarks(document: Document): BookmarkLink[] {
       }
       parent = parent?.parentNode;
     }
-    if (parents.length == 2) {
-      parents.push('/');
-    }
     return {
       url: link.getAttribute('href'),
       name: link.textContent,

@@ -30,6 +30,9 @@ const columns = [
   {
     title: '文件夹',
     dataIndex: 'dirs',
+    render: (text: string[]) => {
+      return text.join('/') || '-';
+    },
   },
 ];
 
