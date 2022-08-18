@@ -1,19 +1,25 @@
-const Koa = require('koa');
-const app = new Koa();
-const fs = require('fs/promises');
-const path = require('path');
+const Koa = require('koa')
+const app = new Koa()
+const fs = require('fs/promises')
+const path = require('path')
+const Router = require('koa-router')
+const router = new Router()
+const bodyparser = require("koa-bodyparser")
+const cors = require("@koa/cors")
+
 
 /**
  * 网页储存的位置
  */
-const bookmarksDir = path.join(__dirname, '../../bookmarks');
-
-async function init() {
+const bookmarksDir = path.join(__dirname, '../../bookmarks')
+async function init () {
   try {
-    await fs.rm(bookmarksDir, { recursive: true });
-  } catch (error) {}
-  await fs.mkdir(bookmarksDir, { recursive: true });
+    await fs.rm(bookmarksDir, { recursive: true })
+  } catch (error) { }
+  await fs.mkdir(bookmarksDir, { recursive: true })
 }
+
+
 
 init().then(() => {
   /**
@@ -28,8 +34,22 @@ init().then(() => {
    * PATCH /api/v1/config
    *
    */
-  app.use((ctx) => {
-    ctx.body = 'Hello Koa';
-  });
-  app.listen(3008);
-});
+  let a
+  router.prefix('/api/v1')
+  router.get('/1', async (ctx, next) => {
+    ctx.body = {
+      bookmarksDir: bookmarksDir,
+      chrome: a || '',
+    }
+    await next()
+  })
+  router.patch('/2', async ctx => {
+    a = ctx.request.body.chrome
+    ctx.body = 'success'
+  })
+
+
+  app.use(cors())
+  app.use(bodyparser()).use(router.routes()).use(router.allowedMethods())
+  app.listen(3008)
+})
