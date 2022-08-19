@@ -25,7 +25,7 @@ async function init () {
 
 init().then(() => {
   let a
-  router.prefix('/api/v1/config')
+  router.prefix('/api/v1')
   router.get('/', async (ctx, next) => {
     ctx.body = {
       code: 200,
@@ -44,14 +44,15 @@ init().then(() => {
       bookmarksDir: bookmarksDir,
       time: new Date()
     }
-    await fs.writeFile(file, JSON.stringify(content), async (err) => {
-      if (err) {
-        ctx.body = {
-          code: 500,
-          message: '写入失败'
-        }
+    try {
+      await fs.writeFile(file, JSON.stringify(content))
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: '写入失败'
       }
-    })
+    }
+
     a = ctx.request.body.chrome,
       ctx.body = {
         code: 200,

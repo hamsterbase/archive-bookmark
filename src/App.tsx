@@ -57,7 +57,7 @@ function App() {
   };
   const onFinish = (e: any) => {
     if (e.url) {
-      axios.patch('/api/v1/config', { chrome: e.url }).then((res) => {
+      axios.patch('/api/v1', { chrome: e.url }).then((res) => {
         if (res.status === 200) {
           message.success('提交成功');
           form.setFieldsValue({
@@ -71,7 +71,7 @@ function App() {
   };
 
   const getInfo = () => {
-    axios.get('/api/v1/config').then((res) => {
+    axios.get('/api/v1').then((res) => {
       setData(res.data.data);
       message.success('获取成功');
     });
