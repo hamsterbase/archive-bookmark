@@ -26,7 +26,7 @@ async function init () {
 init().then(() => {
   let a
   router.prefix('/api/v1')
-  router.get('/', async (ctx, next) => {
+  router.get('/config', async (ctx, next) => {
     ctx.body = {
       code: 200,
       data: {
@@ -37,7 +37,7 @@ init().then(() => {
     }
     await next()
   })
-  router.patch('/', async ctx => {
+  router.patch('/config', async ctx => {
     const content =
     {
       chrome: ctx.request.body.chrome,
