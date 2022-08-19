@@ -57,7 +57,7 @@ function App() {
   };
   const onFinish = (e: any) => {
     if (e.url) {
-      axios.patch('http://localhost:3008/api/v1/2', { chrome: e.url }).then((res) => {
+      axios.patch('/api/v1/config', { chrome: e.url }).then((res) => {
         if (res.status === 200) {
           message.success('提交成功');
           form.setFieldsValue({
@@ -71,8 +71,8 @@ function App() {
   };
 
   const getInfo = () => {
-    axios.get('http://localhost:3008/api/v1/1').then((res) => {
-      setData(res.data);
+    axios.get('/api/v1/config').then((res) => {
+      setData(res.data.data);
       message.success('获取成功');
     });
   };

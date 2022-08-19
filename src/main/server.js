@@ -7,11 +7,13 @@ const router = new Router()
 const bodyparser = require("koa-bodyparser")
 const cors = require("@koa/cors")
 
-
 /**
  * 网页储存的位置
  */
 const bookmarksDir = path.join(__dirname, '../../bookmarks')
+// 数据储存的位置
+const file = path.join(__dirname, '../data/config.json')
+
 async function init () {
   try {
     await fs.rm(bookmarksDir, { recursive: true })
@@ -22,34 +24,42 @@ async function init () {
 
 
 init().then(() => {
-  /**
-   *
-   * 1. 获取 bookmarksDir 地址
-   * 2. 获取 chrome 地址。 默认 null
-   *
-   * GET /api/v1/config
-   *
-   *
-   * 1. 更新 chrome 地址. 浏览器打开 chrome://version/, 找 Executable Path
-   * PATCH /api/v1/config
-   *
-   */
   let a
-  router.prefix('/api/v1')
-  router.get('/1', async (ctx, next) => {
+  router.prefix('/api/v1/config')
+  router.get('/', async (ctx, next) => {
     ctx.body = {
-      bookmarksDir: bookmarksDir,
-      chrome: a || '',
+      code: 200,
+      data: {
+        bookmarksDir: bookmarksDir,
+        chrome: a || '',
+      },
+      message: 'SUCESS'
     }
     await next()
   })
-  router.patch('/2', async ctx => {
-    a = ctx.request.body.chrome
-    ctx.body = 'success'
+  router.patch('/', async ctx => {
+    const content =
+    {
+      chrome: ctx.request.body.chrome,
+      bookmarksDir: bookmarksDir,
+      time: new Date()
+    }
+    await fs.writeFile(file, JSON.stringify(content), async (err) => {
+      if (err) {
+        ctx.body = {
+          code: 500,
+          message: '写入失败'
+        }
+      }
+    })
+    a = ctx.request.body.chrome,
+      ctx.body = {
+        code: 200,
+        message: 'SUCESS'
+      }
   })
-
-
+  // 跨域
   app.use(cors())
   app.use(bodyparser()).use(router.routes()).use(router.allowedMethods())
-  app.listen(3008)
+  app.listen(3003)
 })
