@@ -6,6 +6,7 @@ const Router = require('koa-router')
 const router = new Router()
 const bodyparser = require("koa-bodyparser")
 const cors = require("@koa/cors")
+const puppeteer = require('puppeteer')
 
 /**
  * 网页储存的位置
@@ -58,6 +59,20 @@ init().then(() => {
         code: 200,
         message: 'SUCESS'
       }
+  })
+  router.get('/save', async ctx => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto('http://localhost:3000')
+    const session = await page.target().createCDPSession()
+    await session.send('Page.enable')
+    const { data } = await session.send('Page.captureSnapshot')
+    fs.writeFile('./bookmark.mhtml', data)
+    await browser.close()
+    ctx.body = {
+      code: 200,
+      message: 'SUCESS'
+    }
   })
   // 跨域
   app.use(cors())

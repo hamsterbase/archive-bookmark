@@ -76,6 +76,9 @@ function App() {
       message.success('获取成功');
     });
   };
+  const saveHtml = () => {
+    axios.get('/api/v1/save');
+  };
 
   return (
     <div className={styles.container}>
@@ -99,6 +102,7 @@ function App() {
               <Button type="primary" htmlType="submit">
                 提交
               </Button>
+              <Button onClick={saveHtml}>保存网页</Button>
             </Space>
           </Form.Item>
         </Form>
