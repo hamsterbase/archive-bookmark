@@ -1,41 +1,12 @@
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Table, Button, Upload, Input, Form, Space, message } from 'antd';
-import axios from 'axios';
 import { AnalyseHtml } from './analysis-html';
 import type { RcFile } from 'antd/lib/upload/interface';
 import type { BookmarkLink } from './analysis-html';
 import 'antd/dist/antd.css';
 import styles from './App.module.css';
 
-//定义table列
-const columns = [
-  {
-    title: '名称',
-    dataIndex: 'name',
-    render: (text: string) => {
-      return (
-        <div style={{ width: '230px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</div>
-      );
-    },
-  },
-  {
-    title: '地址',
-    dataIndex: 'url',
-    render: (text: string) => {
-      return (
-        <div style={{ width: '230px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</div>
-      );
-    },
-  },
-  {
-    title: '文件夹',
-    dataIndex: 'dirs',
-    render: (text: string[]) => {
-      return text.join('/') || '-';
-    },
-  },
-];
 interface IData {
   bookmarksDir: string;
   chrome: string | undefined;
@@ -57,29 +28,85 @@ function App() {
   };
   const onFinish = (e: any) => {
     if (e.url) {
-      axios.patch('/api/v1/config', { chrome: e.url }).then((res) => {
-        if (res.status === 200) {
+      fetch('/api/v1/config', {
+        method: 'PATCH',
+        body: JSON.stringify({
+          chrome: e.url,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
           message.success('提交成功');
           form.setFieldsValue({
             url: null,
           });
-        } else {
-          message.success('服务繁忙！');
-        }
-      });
+        });
     }
   };
 
   const getInfo = () => {
-    axios.get('/api/v1/config').then((res) => {
-      setData(res.data.data);
-      message.success('获取成功');
-    });
+    fetch('/api/v1/config', { method: 'GET' })
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res?.data);
+        message.success('获取成功');
+      });
   };
-  const saveHtml = () => {
-    axios.get('/api/v1/save');
+  const saveHtml = (url: string) => {
+    fetch('/api/v1/save', {
+      method: 'POST',
+      body: JSON.stringify({
+        saveUrl: url,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        message.success('保存成功');
+      });
   };
-
+  //定义table列
+  const columns = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+      render: (text: string) => {
+        return (
+          <div style={{ width: '230px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {text}
+          </div>
+        );
+      },
+    },
+    {
+      title: '地址',
+      dataIndex: 'url',
+      render: (text: string) => {
+        return (
+          <div style={{ width: '230px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {text}
+          </div>
+        );
+      },
+    },
+    {
+      title: '文件夹',
+      dataIndex: 'dirs',
+      render: (text: string[]) => {
+        return text.join('/') || '-';
+      },
+    },
+    {
+      title: '保存网页',
+      dataIndex: 'dirs',
+      render: (text: string, record: Record<string, string>, index: number) => {
+        return (
+          <Button type="primary" onClick={() => saveHtml(record.url)}>
+            保存
+          </Button>
+        );
+      },
+    },
+  ];
   return (
     <div className={styles.container}>
       <div className={styles.uploadButton}>
@@ -102,7 +129,6 @@ function App() {
               <Button type="primary" htmlType="submit">
                 提交
               </Button>
-              <Button onClick={saveHtml}>保存网页</Button>
             </Space>
           </Form.Item>
         </Form>

@@ -3,7 +3,7 @@ export interface BookmarkLink {
   name: string | null;
   url: string | null;
   dirs: Array<string>;
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 interface IParent {

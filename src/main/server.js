@@ -4,7 +4,7 @@ const fs = require('fs/promises')
 const path = require('path')
 const Router = require('koa-router')
 const router = new Router()
-const bodyparser = require("koa-bodyparser")
+const koaBody = require("koa-body")
 const cors = require("@koa/cors")
 const puppeteer = require('puppeteer')
 
@@ -41,7 +41,7 @@ init().then(() => {
   router.patch('/config', async ctx => {
     const content =
     {
-      chrome: ctx.request.body.chrome,
+      chrome: JSON.parse(ctx.request.body).chrome,
       bookmarksDir: bookmarksDir,
       time: new Date()
     }
@@ -54,16 +54,16 @@ init().then(() => {
       }
     }
 
-    a = ctx.request.body.chrome,
+    a = JSON.parse(ctx.request.body).chrome,
       ctx.body = {
         code: 200,
         message: 'SUCESS'
       }
   })
-  router.get('/save', async ctx => {
+  router.post('/save', async ctx => {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
-    await page.goto('http://localhost:3000')
+    await page.goto(JSON.parse(ctx.request.body).saveUrl)
     const session = await page.target().createCDPSession()
     await session.send('Page.enable')
     const { data } = await session.send('Page.captureSnapshot')
@@ -76,6 +76,6 @@ init().then(() => {
   })
   // 跨域
   app.use(cors())
-  app.use(bodyparser()).use(router.routes()).use(router.allowedMethods())
+  app.use(koaBody()).use(router.routes()).use(router.allowedMethods())
   app.listen(3003)
 })
