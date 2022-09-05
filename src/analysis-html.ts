@@ -1,14 +1,11 @@
 export interface BookmarkLink {
   //这里写好类型
-  name: string | null;
-  url: string | null;
+  key: React.Key;
+  name: string;
+  url: string;
   dirs: Array<string>;
-  [key: string]: unknown;
 }
 
-interface IParent {
-  [key: string]: any;
-}
 export function getBookmarks(document: Document): BookmarkLink[] {
   //解析的逻辑
   const header = document.querySelector('h1');
@@ -16,8 +13,8 @@ export function getBookmarks(document: Document): BookmarkLink[] {
   const root = header?.nextElementSibling || document.body;
   //找到全部的书签
   const linksElements = Array.from(root.querySelectorAll('a'));
-  const links = linksElements.map((link: HTMLAnchorElement) => {
-    let parent: IParent = link.parentNode || {};
+  const links = linksElements.map((link: HTMLAnchorElement, i: number) => {
+    let parent = link.parentNode as HTMLDListElement;
     let parents = [];
 
     while (parent) {
@@ -27,16 +24,17 @@ export function getBookmarks(document: Document): BookmarkLink[] {
         const textContent = `${parent?.previousSibling?.previousSibling?.textContent}`;
         parents.unshift(textContent);
       }
-      parent = parent?.parentNode;
+      parent = parent?.parentNode as HTMLDListElement;
     }
     return {
+      key: i,
       url: link.getAttribute('href'),
       name: link.textContent,
       //忽略最外面两层文件夹
       dirs: parents.slice(2),
     };
   });
-  return links;
+  return links as BookmarkLink[];
 }
 export function AnalyseHtml(file: File): Promise<BookmarkLink[]> {
   return new Promise((resolve, reject) => {
